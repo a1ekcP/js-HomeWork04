@@ -2,6 +2,39 @@ let countries = [];
 let storedCountries = [];
 
 
+function toSort(){
+    for(i of document.querySelectorAll('[attr]')){
+        i.onclick = function(event){
+           let key = event.currentTarget.getAttribute('attr');
+           let isSorted = event.currentTarget.getAttribute('attr-sort');
+
+            if(storedCountries.length){
+                selectCountries = storedCountries;
+            }else{
+                selectCountries = countries;
+            }
+
+           let sortCntrs = selectCountries.sort(function(a, b){
+            if(isSorted){
+                return a[key] > b[key] ? -1 : 1;
+            }
+                return a[key] > b[key] ? 1 : -1;
+            });
+
+
+           if(isSorted){
+            event.currentTarget.removeAttribute('attr-sort');
+           }
+           else{
+            event.currentTarget.setAttribute('attr-sort', '+')
+           }
+        
+           renderCountries(sortCntrs);
+        }
+    }
+}
+
+
 
 function checkSelect() {
     document.querySelector('.countries-select').onchange = function(e) {
@@ -14,6 +47,8 @@ function checkSelect() {
         document.getElementById('search').value = '';
     }
 }
+
+
 
 function renderSelect(countries) {
     const uniqueRegions = countries.reduce(function(acc, country) {
@@ -35,6 +70,9 @@ function renderSelect(countries) {
     checkSelect();
 }
 
+
+
+
 function setListeners() {
     let tbody = document.querySelector('.table tbody');
     tbody.onclick = function(e) {
@@ -44,6 +82,8 @@ function setListeners() {
         e.target.classList.add('bg-warning');
     }
 }
+
+
 
 function renderCountries(countries) {
     const htmlStr = countries.reduce(function(acc, country, index) {
@@ -57,7 +97,11 @@ function renderCountries(countries) {
     }, '');
     document.querySelector('.table tbody').innerHTML = htmlStr;
     setListeners();
+    toSort();
 }
+
+
+
 
 document.getElementById('search').onkeyup = function(e) {
     let searchValue = e.currentTarget.value.toLowerCase().trim();
@@ -71,7 +115,7 @@ document.getElementById('search').onkeyup = function(e) {
             || region.includes(searchValue);
     })
     renderCountries(filteredCountries);
-    // document.querySelector('.countries-select').value = '';
+    document.querySelector('.countries-select').value = '';
 }
 
 
@@ -81,6 +125,8 @@ document.querySelector('.google-link').onclick = function(e) {
         e.preventDefault();
     }
 }
+
+
 
 document.querySelector('.load-countries').onclick = function() {
     document.querySelector('.load-countries button').setAttribute('disabled', '');
