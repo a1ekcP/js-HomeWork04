@@ -2,11 +2,11 @@ let countries = [];
 let storedCountries = [];
 
 function toSort(){
-    for(i of document.querySelectorAll('[attr]')){
+    for(i of document.querySelectorAll('[data-attr]')){
         i.onclick = function(event){
-            let key = event.currentTarget.getAttribute('attr');
-            let isSorted = event.currentTarget.getAttribute('attr-sort');
-            storedCountries.length ? selectCountries = storedCountries : selectCountries = countries;
+            let key = event.currentTarget.getAttribute('data-attr');
+            let isSorted = event.currentTarget.getAttribute('data-sort');
+            storedCountries.length ? selectCountries = storedCountries :selectCountries = countries;
             let sortCntrs = selectCountries.sort(function(a, b){
                 if(isSorted){
                     return a[key] > b[key] ? -1 : 1;
@@ -14,9 +14,9 @@ function toSort(){
                 return a[key] > b[key] ? 1 : -1;
             });
             if(isSorted){
-                event.currentTarget.removeAttribute('attr-sort');
+                event.currentTarget.removeAttribute('data-sort');
             }else{
-                event.currentTarget.setAttribute('attr-sort', '+');
+                event.currentTarget.setAttribute('data-sort', '+')
             }
             renderCountries(sortCntrs);
         }
