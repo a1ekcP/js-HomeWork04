@@ -1,44 +1,33 @@
 let countries = [];
 let storedCountries = [];
 
-
 function toSort(){
     for(i of document.querySelectorAll('[attr]')){
         i.onclick = function(event){
-           let key = event.currentTarget.getAttribute('attr');
-           let isSorted = event.currentTarget.getAttribute('attr-sort');
-
-            if(storedCountries.length){
-                selectCountries = storedCountries;
-            }else{
-                selectCountries = countries;
-            }
-
-           let sortCntrs = selectCountries.sort(function(a, b){
-            if(isSorted){
-                return a[key] > b[key] ? -1 : 1;
-            }
+            let key = event.currentTarget.getAttribute('attr');
+            let isSorted = event.currentTarget.getAttribute('attr-sort');
+            storedCountries.length ? selectCountries = storedCountries : selectCountries = countries;
+            let sortCntrs = selectCountries.sort(function(a, b){
+                if(isSorted){
+                    return a[key] > b[key] ? -1 : 1;
+                }
                 return a[key] > b[key] ? 1 : -1;
             });
-
-
-           if(isSorted){
-            event.currentTarget.removeAttribute('attr-sort');
-           }
-           else{
-            event.currentTarget.setAttribute('attr-sort', '+')
-           }
-        
-           renderCountries(sortCntrs);
+            if(isSorted){
+                event.currentTarget.removeAttribute('attr-sort');
+            }else{
+                event.currentTarget.setAttribute('attr-sort', '+');
+            }
+            renderCountries(sortCntrs);
         }
     }
 }
 
 
-
 function checkSelect() {
     document.querySelector('.countries-select').onchange = function(e) {
         const value = e.currentTarget.value;
+        console.log(value)
         const filteredCountries = countries.filter(function(country) {
             return country.region === value;
         })
